@@ -65,3 +65,21 @@ exports.deletePersonalDetails = async(req,res) => {
         res.status(500).json({error:error.message});
     }
 }
+
+exports.getRelatedOfficialsByPersonalDetailsId = async (req, res) => {
+    try {
+        const relatedOfficials = await personalDetailsService.getRelatedOfficialsByPersonalDetailsId(req.params.personal_details_id);
+        res.json(relatedOfficials);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+exports.getPersonalAndRelatedByPersonalId = async (req , res)=> {
+    try {
+        const allDetails = await personalDetailsService.getPersonalAndRelatedByPersonalId(req.params.personal_details_id);
+        res.json(allDetails);
+    } catch (error) {
+        res.status(500).json({error: error.message});
+    }
+}

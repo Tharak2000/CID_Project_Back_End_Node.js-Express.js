@@ -14,5 +14,5 @@ app.use('/relatedofficials', relatedOfficialsRoutes);
 
 app.get('/',(req,res) => res.send('API is running'));
 const PORT = process.env.PORT || 5000;
-console.log(`Postgres connected to ${PORT} successfyully`);
-app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
+console.log(`Postgres connected to ${PORT} successfully`);
+app.listen(PORT, '0.0.0.0', () => console.log(`Server is running on port ${PORT}`));

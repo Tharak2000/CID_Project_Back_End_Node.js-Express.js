@@ -11,6 +11,22 @@ exports.getPersonalDetailsById = async (personal_details_id) => {
         return result.rows[0];   
 }
 
+
+exports.getPersonalAndRelatedByPersonalId = async (personal_details_id) => {
+  const result = await pool.query(
+    queries.GET_PERSONAL_AND_RELATED_OFFICIALS_BY_ID,
+    [personal_details_id]
+  );
+
+  if (result.rows.length === 0) {
+    return null;
+  }
+
+  // ✅ Already structured correctly
+  return result.rows[0];
+};
+
+
 exports.createPersonalDetails = async (data) => {
         const {first_name, last_name} = data;
         const values = [first_name, last_name];
@@ -37,4 +53,19 @@ exports.deletePersonalDetails = async(personal_details_id) =>{
             throw new Error('Personal Details not found');
         }
         return {message: 'Personal Details deleted successfully'};
+}
+
+exports.getRelatedOfficialsByPersonalDetailsId = async (personal_details_id) => {
+    const res = await pool.query(queries.GET_RELATED_OFFICIALS_BY_PERSONAL_DETAILS_ID, [personal_details_id]);
+    return res.rows;
+}
+
+
+exports.getPersonalAndRelatedByPersonalId = async(personal_details_id) => {
+    const allDetails = await pool.query(queries.GET_PERSONAL_AND_RELATED_OFFICIALS_BY_ID,[personal_details_id])
+    return allDetails.rows[0];
+    // if(allDetails.rowCount ===0){
+    //     throw new Error('Details Not found');
+    // }
+    // return{message: ''}
 }

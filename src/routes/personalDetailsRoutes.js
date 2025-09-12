@@ -7,5 +7,6 @@ router.get('/:personal_details_id', personalDetailsController.getPersonalDetails
 router.post('/', personalDetailsController.createPersonalDetails);
 router.put('/:personal_details_id', personalDetailsController.updatePersonalDetails);
 router.put('/soft_delete/:personal_details_id', personalDetailsController.deletePersonalDetails);
-
+router.get('/:personal_details_id/related_officials', personalDetailsController.getRelatedOfficialsByPersonalDetailsId);
+router.get('/:personal_details_id/combined', personalDetailsController.getPersonalAndRelatedByPersonalId);
 module.exports = router;
