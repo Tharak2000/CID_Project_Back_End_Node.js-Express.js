@@ -3,12 +3,14 @@ exports.GET_ALL_PERSONAL_DETAILS = 'SELECT * FROM personal_details WHERE is_dele
 exports.GET_PERSONAL_DETAILS_BY_ID = 'SELECT * FROM personal_details WHERE personal_details_id=$1 AND is_deleted = FALSE';
 
 
-exports.GET_PERSONAL_AND_RELATED_OFFICIALS_BY_ID = `
+exports.GET_ALL_BY_PERSONAL_DETAILS_ID = `
   SELECT 
     pd.personal_details_id,
     pd.first_name,
     pd.last_name,
     pd.is_deleted,
+
+    -- Related officials JSON
     COALESCE(
       json_agg(
         json_build_object(
@@ -18,15 +20,33 @@ exports.GET_PERSONAL_AND_RELATED_OFFICIALS_BY_ID = `
           'ro_is_deleted', ro.is_deleted
         )
       ) FILTER (WHERE ro.related_officials_id IS NOT NULL), '[]'
-    ) AS related_officials
+    ) AS related_officials,
+
+    -- Bank details JSON
+    COALESCE(
+      json_agg(
+        DISTINCT jsonb_build_object(
+          'bank_details_id', bd.bank_details_id,
+          'account_details', bd.account_details,
+          'loans', bd.loans,
+          'leasing_facilities', bd.leasing_facilities,
+          'bd_is_deleted', bd.is_deleted
+        )
+      ) FILTER (WHERE bd.bank_details_id IS NOT NULL), '[]'
+    ) AS bank_details
+
   FROM personal_details pd
   LEFT JOIN related_officials ro 
     ON pd.personal_details_id = ro.personal_details_id 
     AND ro.is_deleted = FALSE
+  LEFT JOIN bank_details bd
+    ON pd.personal_details_id = bd.personal_details_id 
+    AND bd.is_deleted = FALSE
   WHERE pd.personal_details_id = $1
     AND pd.is_deleted = FALSE
   GROUP BY pd.personal_details_id, pd.first_name, pd.last_name, pd.is_deleted;
 `;
+
 
 exports.CREATE_PERSONAL_DETAILS = `
   INSERT INTO personal_details 

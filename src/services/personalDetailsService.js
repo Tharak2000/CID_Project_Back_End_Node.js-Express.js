@@ -62,7 +62,7 @@ exports.getRelatedOfficialsByPersonalDetailsId = async (personal_details_id) => 
 
 
 exports.getPersonalAndRelatedByPersonalId = async(personal_details_id) => {
-    const allDetails = await pool.query(queries.GET_PERSONAL_AND_RELATED_OFFICIALS_BY_ID,[personal_details_id])
+    const allDetails = await pool.query(queries.GET_ALL_BY_PERSONAL_DETAILS_ID,[personal_details_id])
     return allDetails.rows[0];
     // if(allDetails.rowCount ===0){
     //     throw new Error('Details Not found');
