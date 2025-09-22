@@ -8,11 +8,12 @@ app.use(express.json());
 const personalDetailsRoutes = require('./src/routes/personalDetailsRoutes');
 const relatedOfficialsRoutes = require('./src/routes/relatedOfficialsRoutes');
 const bankDetailsRoutes = require('./src/routes/bankDetailsRoutes');
+const enemiesRoutes = require('./src/routes/enemiesRoutes');
 
 app.use('/personaldetails', personalDetailsRoutes);
 app.use('/relatedofficials', relatedOfficialsRoutes);
-app.use('/bankdetails', bankDetailsRoutes)
-
+app.use('/bankdetails', bankDetailsRoutes);
+app.use('/enemies', enemiesRoutes);
 
 
 app.get('/',(req,res) => res.send('API is running'));
